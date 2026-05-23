@@ -1,48 +1,24 @@
-import { useState } from "react";
-import axios from "axios";
+const handleLogin = async () => {
 
-function Login() {
-  const [form, setForm] = useState({
-    email: "",
-    password: ""
-  });
+  try {
 
-  const handleLogin = async () => {
     const res = await axios.post(
       "http://localhost:5000/api/auth/login",
       form
     );
 
-    localStorage.setItem("token", res.data.token);
+    localStorage.setItem(
+      "token",
+      `Bearer ${res.data.token}`
+    );
 
     alert("Login Successful");
-  };
 
-  return (
-    <div>
-      <h1>Login</h1>
+  } catch (error) {
 
-      <input
-        type="email"
-        placeholder="Email"
-        onChange={(e) =>
-          setForm({ ...form, email: e.target.value })
-        }
-      />
+    console.log(error.response.data);
 
-      <input
-        type="password"
-        placeholder="Password"
-        onChange={(e) =>
-          setForm({ ...form, password: e.target.value })
-        }
-      />
-
-      <button onClick={handleLogin}>
-        Login
-      </button>
-    </div>
-  );
-}
+  }
+};
 
 export default Login;
